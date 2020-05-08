@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+  <h1>恭喜你登录成功！</h1>
+  <button onclick="logout()">点我退出</button>
+  <script>
+    $(function(){
+      var token = window.localStorage.getItem('token');
+      $.ajax({
+        url: 'http://localhost:3000/user/home',
+        type: 'post',
+        data:{
+          token
+        },
+        success(ok) {
+          console.log(ok)
+          if(ok.islogin == 0){
+            $("h1").html('用户未登录');
+          } else {
+            $("h1").html('恭喜你登录成功！');
+          }
+        }
+      })
+    })
+    function logout(){
+      $.ajax({
+        url: 'http://localhost:3000/user/logout',
+        type: 'get',
+        success(ok) {
+          console.log(ok);
+          window.localStorage.setItem('token', ok.data)
+          window.location.href = './login.html'
+        }
+      })
+    }
+  </script>
+</body>
+</html>

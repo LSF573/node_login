@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+  <h1>登录</h1>
+  <div>
+    用户名：<input type="text" name="username" id="username"><br/>
+    密  码：<input type="text" name="password" id="password"><br/>
+    <button onclick="funlogin()">点击登录</button>
+  </div>
+  <script>
+    function funlogin() {
+      var username = $('#username').val();
+      var password = $('#password').val();
+      console.log(username,password)
+      $.ajax({
+        url: 'http://localhost:3000/user/login',
+        method: 'post',
+        data:{
+          username,
+          password
+        },
+        success(res){
+          console.log('loginsuccess-----', res.data)
+          var status = res.data.status;
+          if(status === 1){
+            // 登录成功保存token
+            window.localStorage.setItem('token', res.token)
+            window.location.href = './home.html'
+          } else {
+            alert(res.msg);
+          }
+        }
+      })
+    }
+  </script>
+</body>
+</html>
